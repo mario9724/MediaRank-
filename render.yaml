@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: cineranks
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: TMDB_API_KEY
+        sync: false
+  - type: pgsql
+    name: cineranks-db
+    plan: starter
