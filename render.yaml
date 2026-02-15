@@ -7,11 +7,10 @@ services:
     startCommand: npm start
     envVars:
       - key: TMDB_API_KEY
-        sync: false  # Añade tu key manual
+        sync: false
       - fromDatabase:
           name: cineranks-db
           property: connectionString  # Auto DATABASE_URL interna
-    autoDeploy: true
-  - type: pgsql
+  - type: postgres  # ¡FIX: postgres, NO pgsql!
     name: cineranks-db
-    plan: starter  # 1GB storage, autoscaling
+    plan: starter
