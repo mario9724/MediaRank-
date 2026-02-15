@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>CineRanks - Rankings</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { background: #000; color: #fff; font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+    input, button { background: #333; color: #fff; border: 1px solid #666; padding: 10px; margin: 5px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid #666; padding: 8px; text-align: left; }
+    th { background: #333; }
+    canvas { max-width: 600px; }
+  </style>
+</head>
+<body>
+  <h1>🎬 CineRanks</h1>
+  <input id="search" placeholder="Actor ID TMDB o Género ID (ej: 550 DeNiro, 80 Crime)" style="width: 400px;">
+  <button onclick="loadRankings()">Buscar Rankings</button>
+  <table id="table">
+    <thead><tr><th>Pos</th><th>Película</th><th>Rating CineRanks</th><th>Votos</th></tr></thead>
+    <tbody></tbody>
+  </table>
+  <canvas id="chart"></canvas>
+
+  <script>
+    let chart;
+    async function loadRankings() {
+      const q = document.getElementById('search').value;
+      const res = await fetch(`/api/rankings?${new URLSearchParams({actor: q.split(' ')[0], genre: q.split(' ')[1]})}`);
+      const data = await res.json();
+      const tbody = document.querySelector('#table tbody');
+      tbody.innerHTML = '';
+      data.forEach((row, i) => {
+        const tr = tbody.insertRow();
+        tr.innerHTML = `<td>${i+1}</td><td>${row.tmdb_id}</td><td>${row.avg_rating}</td><td>${row.votes}</td>`;
+      });
+      if (chart) chart.destroy();
+      const ctx = document.getElementById('chart').getContext('2d');
+      chart = new Chart(ctx, {
+        type: 'bar',
+         { labels: data.map((_,i)=>`#${i+1}`), datasets: [{ label: 'Avg Rating',  data.map(d=>d.avg_rating) }] },
+        options: { scales: { y: { beginAtZero: true, max: 5 } } }
+      });
+    }
+    loadRankings(); // Carga inicial
+  </script>
+</body>
+</html>
