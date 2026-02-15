@@ -1,0 +1,15 @@
+{
+  "id": "com.cineranks.addon",
+  "version": "1.0.0",
+  "name": "CineRanks",
+  "description": "Puntúa películas en Stremio y ve rankings por actores/géneros en la web.",
+  "logo": "https://tu-logo-url.com/cineranks-logo.png",
+  "resources": ["catalog", "meta", "rating"],
+  "types": ["movie"],
+  "catalogs": [
+    { "type": "movie", "id": "top-actors", "name": "Top por Actores" },
+    { "type": "movie", "id": "top-genres", "name": "Top por Géneros" },
+    { "type": "movie", "id": "user-rankings", "name": "Rankings Colaborativos" }
+  ],
+  "behaviorHints": { "configurable": true, "configurationRequired": false }
+}[web:12][web:13]
